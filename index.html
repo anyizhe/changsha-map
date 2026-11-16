@@ -865,6 +865,78 @@ svg.leaflet-image-layer.leaflet-interactive path {
   }
   .mapLabel.food{color:#7c3a13;border-color:rgba(192,86,33,.25)}
 
+
+  /* ---------- 定位 / 导航 / 视觉微调 ---------- */
+  .fab{
+    position:fixed;right:16px;bottom:208px;z-index:545;width:46px;height:46px;border-radius:15px;border:1px solid rgba(255,255,255,.85);
+    background:var(--paper);box-shadow:var(--shadow-s);display:grid;place-items:center;cursor:pointer;color:var(--ink);
+    transition:transform .15s,box-shadow .15s,color .15s;
+  }
+  .fab:hover{transform:translateY(-1px);box-shadow:var(--shadow-m)}
+  .fab.on{color:#1573ff}
+  .fab svg{width:21px;height:21px}
+  .fab.busy svg{animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .me-dot{position:relative;width:18px;height:18px}
+  .me-dot:before{content:"";position:absolute;inset:0;border-radius:50%;background:#1573ff;border:3px solid #fff;
+                 box-shadow:0 2px 8px rgba(21,115,255,.5)}
+  .me-dot:after{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px solid rgba(21,115,255,.45);animation:pulse 2s ease-out infinite}
+  @keyframes pulse{0%{transform:scale(.6);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+
+  .mybanner{
+    position:fixed;left:50%;top:80px;z-index:560;display:flex;align-items:center;gap:10px;
+    background:rgba(25,26,31,.94);color:#fff;font-size:12.5px;padding:9px 10px 9px 16px;border-radius:999px;
+    box-shadow:var(--shadow-m);white-space:nowrap;
+    opacity:0;pointer-events:none;transform:translate(-50%,-14px);
+    transition:opacity .25s ease,transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  .mybanner.on{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+  .mybanner b{color:#8fc3ff;font-weight:700}
+  .mybanner button{appearance:none;border:0;background:rgba(255,255,255,.16);color:#fff;font:inherit;font-size:11.5px;
+    font-weight:700;padding:5px 11px;border-radius:999px;cursor:pointer}
+  .mybanner button:hover{background:rgba(255,255,255,.26)}
+
+  .pop .nav{display:flex;gap:6px;margin-top:10px}
+  .pop .nbtn{
+    flex:1;display:flex;align-items:center;justify-content:center;gap:4px;text-decoration:none;
+    font-size:11.5px;font-weight:700;color:#fff;background:var(--c,#d93a2b);border-radius:9px;padding:8px 4px;
+    box-shadow:0 2px 8px color-mix(in srgb,var(--c) 35%,transparent);transition:transform .14s,filter .14s;
+  }
+  .pop .nbtn:hover{transform:translateY(-1px);filter:brightness(1.05)}
+  .pop .nbtn.bd{background:#2b6cb0;box-shadow:0 2px 8px rgba(43,108,176,.32)}
+  .pop .dist{font-size:11px;color:#8b8f98;margin:8px 0 0}
+
+  /* 顶部渐隐，让工具栏更干净 */
+  .bar:before{
+    content:"";position:fixed;left:0;right:0;top:0;height:132px;z-index:-1;pointer-events:none;
+    background:linear-gradient(to bottom,rgba(242,237,228,.92),rgba(242,237,228,0));
+  }
+
+  /* —— 视觉放宽 —— */
+  .brand{padding:10px 18px 10px 10px;border-radius:18px}
+  .days{padding:5px;border-radius:16px;gap:4px}
+  .chip{padding:9px 15px;font-size:13px;border-radius:12px}
+  .panel{width:356px;border-radius:22px;top:96px}
+  .phead{padding:16px 20px 14px}
+  .phead h2{font-size:17.5px;margin:7px 0 4px}
+  .plist{padding:10px 12px 18px}
+  .row{padding:10px 10px;border-radius:14px;gap:11px}
+  .row .ico{width:29px;height:29px;border-radius:10px;font-size:12px}
+  .row .txt b{font-size:13.2px;line-height:1.45}
+  .row .txt small{font-size:11.2px;margin-top:2px}
+  .zoomctl button{width:44px;height:44px;border-radius:14px}
+  .leaflet-popup-content{width:288px!important}
+  .pop .body{padding:14px 16px 15px}
+  .pop h3{font-size:15.5px;margin-bottom:5px}
+  .mapLabel{font-size:10.5px}
+
+  @media (max-width:860px){
+    .fab{right:64px;bottom:calc(40vh + 16px);bottom:calc(40dvh + 16px);width:42px;height:42px;border-radius:13px}
+    .panel.hide ~ .fab{bottom:66px}
+    .mybanner{top:auto;bottom:calc(40vh + 64px);font-size:11.5px;padding:7px 8px 7px 13px}
+    .panel.hide ~ .mybanner{bottom:64px}
+  }
   /* ---------- popup ---------- */
   .leaflet-popup-content-wrapper{
     border-radius:16px;padding:0;box-shadow:var(--shadow-l);border:1px solid rgba(255,255,255,.9);
@@ -975,6 +1047,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 9V5a1 1 0 0 1 1-1h4M20 9V5a1 1 0 0 0-1-1h-4M4 15v4a1 1 0 0 0 1 1h4M20 15v4a1 1 0 0 1-1 1h-4"/></svg>
   </button>
 </div>
+
+<button class="fab" id="btnLocate" title="定位我的位置">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3.2M12 18.3v3.2M2.5 12h3.2M18.3 12h3.2"/>
+  </svg>
+</button>
+
+<div class="mybanner" id="mybanner"><span id="mybannerText"></span><button id="mybannerBtn">看行程</button></div>
 
 <div class="legend" id="legend"></div>
 <div class="toast" id="toast"></div>
@@ -2017,6 +2097,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
           + '<h3>'+esc(stop.name)+'</h3>'
           + (stop.addr ? '<p class="addr">'+esc(stop.addr)+'</p>' : '')
           + (stop.note ? '<p class="note">'+esc(stop.note)+'</p>' : '');
+    h += navBlock(stop.lat, stop.lng, stop.name);
     if (stop.menu && stop.menu.length){
       h += '<div class="menu"><div class="lab">本餐菜单 · '+stop.menu.length+' 道</div><div class="chips">';
       for (var i=0;i<stop.menu.length;i++) h += '<span>'+esc(stop.menu[i])+'</span>';
@@ -2033,6 +2114,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       + '<span class="tag">'+(isFood ? "同事推荐 · 吃" : "同事推荐 · 逛")+'</span>'
       + '<h3>'+esc(f.name)+'</h3>'
       + (f.addr ? '<p class="addr">'+esc(f.addr)+'</p>' : '');
+    h += navBlock(f.lat, f.lng, f.name);
     if (f.dishes && f.dishes.length){
       h += '<div class="menu"><div class="lab">网友推荐菜 · '+f.dishes.length+' 道</div><div class="chips">';
       for (var i=0;i<f.dishes.length;i++) h += '<span>'+esc(f.dishes[i])+'</span>';
@@ -2047,10 +2129,104 @@ svg.leaflet-image-layer.leaflet-interactive path {
     var cls = "favPin " + (f.type==="food" ? "food" : "spot") + (dim ? " dim" : "");
     return L.divIcon({
       className: cls,
-      html:'<span class="fdot">'+(f.type==="food"?"吃":"逛")+'</span>'
-         + '<span class="flabel">'+esc(f.short || f.name)+'</span>',
+      html:'<span class="fdot">'+(f.type==="food"?"吃":"逛")+'</span>',
       iconSize:[22,22], iconAnchor:[11,11], popupAnchor:[0,-16]
     });
+  }
+
+  /* ---------------- 定位 / 导航 ---------------- */
+  var myPos = null, myMarker = null, myAcc = null;
+
+  function outOfChina(lat, lng){
+    return lng < 72.004 || lng > 137.8347 || lat < 0.8293 || lat > 55.8271;
+  }
+  function wgs2gcj(lat, lng){
+    var a = 6378245.0, ee = 0.00669342162296594323;
+    function tx(x, y){
+      var ret = -100.0 + 2.0*x + 3.0*y + 0.2*y*y + 0.1*x*y + 0.2*Math.sqrt(Math.abs(x));
+      ret += (20.0*Math.sin(6.0*x*Math.PI) + 20.0*Math.sin(2.0*x*Math.PI)) * 2.0/3.0;
+      ret += (20.0*Math.sin(y*Math.PI) + 40.0*Math.sin(y/3.0*Math.PI)) * 2.0/3.0;
+      ret += (160.0*Math.sin(y/12.0*Math.PI) + 320*Math.sin(y*Math.PI/30.0)) * 2.0/3.0;
+      return ret;
+    }
+    function ty(x, y){
+      var ret = 300.0 + x + 2.0*y + 0.1*x*x + 0.1*x*y + 0.1*Math.sqrt(Math.abs(x));
+      ret += (20.0*Math.sin(6.0*x*Math.PI) + 20.0*Math.sin(2.0*x*Math.PI)) * 2.0/3.0;
+      ret += (20.0*Math.sin(x*Math.PI) + 40.0*Math.sin(x/3.0*Math.PI)) * 2.0/3.0;
+      ret += (150.0*Math.sin(x/12.0*Math.PI) + 300.0*Math.sin(x/30.0*Math.PI)) * 2.0/3.0;
+      return ret;
+    }
+    var dLat = tx(lng - 105.0, lat - 35.0), dLng = ty(lng - 105.0, lat - 35.0);
+    var radLat = lat / 180.0 * Math.PI, magic = Math.sin(radLat);
+    magic = 1 - ee * magic * magic;
+    var sqrtMagic = Math.sqrt(magic);
+    dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * Math.PI);
+    dLng = (dLng * 180.0) / (a / sqrtMagic * Math.cos(radLat) * Math.PI);
+    return [lat + dLat, lng + dLng];
+  }
+
+  function navBlock(lat, lng, name){
+    var nm = encodeURIComponent(name);
+    var amap = "https://uri.amap.com/navigation?to=" + lng.toFixed(6) + "," + lat.toFixed(6) + "," + nm +
+               "&mode=car&policy=1&src=changsha-map&coordinate=gaode&callnative=1";
+    var baidu = "https://api.map.baidu.com/direction?origin=" + encodeURIComponent("我的位置") +
+                "&destination=latlng:" + lat.toFixed(6) + "," + lng.toFixed(6) + "|name:" + nm +
+                "&mode=driving&coord_type=gcj02&src=webapp.changsha-map";
+    var dist = "";
+    if (myPos){
+      var d = distKm([myPos.lat, myPos.lng], [lat, lng]);
+      dist = '<p class="dist">距你直线约 ' + (d < 1 ? Math.round(d * 1000) + " 米" : d.toFixed(1) + " 公里") +
+             '，导航按实际路线走</p>';
+    }
+    return '<div class="nav">'
+         + '<a class="nbtn" target="_blank" rel="noopener" href="' + amap + '">高德导航</a>'
+         + '<a class="nbtn bd" target="_blank" rel="noopener" href="' + baidu + '">百度导航</a>'
+         + '</div>' + dist;
+  }
+
+  function showBanner(text){
+    var b = document.getElementById("mybanner");
+    document.getElementById("mybannerText").textContent = text;
+    b.classList.add("on");
+    clearTimeout(showBanner._t);
+    showBanner._t = setTimeout(function(){ b.classList.remove("on"); }, 9000);
+  }
+
+  function locateMe(silent){
+    var btn = document.getElementById("btnLocate");
+    if (!navigator.geolocation){
+      if (!silent) toast("这个浏览器不支持定位");
+      return;
+    }
+    btn.classList.add("busy");
+    if (!silent) toast("正在定位…");
+    navigator.geolocation.getCurrentPosition(function(pos){
+      btn.classList.remove("busy");
+      btn.classList.add("on");
+      var lat = pos.coords.latitude, lng = pos.coords.longitude;
+      var acc = pos.coords.accuracy || 80;
+      if (!outOfChina(lat, lng)){ var g = wgs2gcj(lat, lng); lat = g[0]; lng = g[1]; }
+      myPos = {lat: lat, lng: lng};
+      if (myMarker){ map.removeLayer(myMarker); myMarker = null; }
+      if (myAcc){ map.removeLayer(myAcc); myAcc = null; }
+      myAcc = L.circle([lat, lng], {radius: Math.min(acc, 400), color: "#1573ff", weight: 1,
+        fillColor: "#1573ff", fillOpacity: .1}).addTo(map);
+      myMarker = L.marker([lat, lng], {
+        icon: L.divIcon({className: "me-wrap", html: '<div class="me-dot"></div>', iconSize: [18,18], iconAnchor: [9,9]}),
+        zIndexOffset: 900, interactive: false, keyboard: false
+      }).addTo(map);
+      var d = distKm([lat, lng], [DATA.hotel.lat, DATA.hotel.lng]);
+      if (d < 80){
+        map.flyTo([lat, lng], 14.5, {duration: .9});
+        showBanner("已定位到你的位置 · 距酒店 " + d.toFixed(1) + " km");
+      } else {
+        showBanner("已定位，但你离长沙约 " + Math.round(d) + " km");
+      }
+    }, function(err){
+      btn.classList.remove("busy");
+      if (silent) return;
+      toast(err && err.code === 1 ? "定位被拒绝：请在浏览器里允许这个网页获取位置" : "定位失败，请检查网络或稍后重试");
+    }, {enableHighAccuracy: true, timeout: 12000, maximumAge: 60000});
   }
 
   /* ---------------- render ---------------- */
@@ -2100,7 +2276,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
           riseOnHover:true, keyboard:false
         }).addTo(gPins);
         m.bindTooltip("D"+d.id+" · "+s.name, {direction:"top", offset:[0,-13], opacity:.95});
-        m.bindPopup(stopPopup(s, d), popupOpts(300, "stop-pop"));
+        m.bindPopup(function(){ return stopPopup(s, d); }, popupOpts(300, "stop-pop"));
         pinIndex[s.key] = m;
       });
     });
@@ -2116,7 +2292,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
           zIndexOffset: -200, riseOnHover:true, keyboard:false
         }).addTo(gFav);
         m.bindTooltip(f.name, {direction:"top", offset:[0,-10], opacity:.95});
-        m.bindPopup(favPopup(f), popupOpts(310));
+        m.bindPopup(function(){ return favPopup(f); }, popupOpts(310));
         favIndex[f.name] = m;
       });
     }
@@ -2624,6 +2800,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
     document.getElementById("panel").classList.toggle("hide", !open);
     document.getElementById("btnPanel").classList.toggle("on", open);
   }
+  document.getElementById("btnLocate").onclick = function(){ locateMe(false); };
+  document.getElementById("mybannerBtn").onclick = function(){
+    document.getElementById("mybanner").classList.remove("on");
+    state.day = "all"; state.mode = "trip"; updateTabs(); renderChips(); render(); renderPanel(); fitDay("all", true);
+  };
   document.getElementById("btnPanel").onclick = function(){ setPanel(!state.panelOpen); };
   document.getElementById("phead").addEventListener("click", function(){
     if (isMobile()) setPanel(!state.panelOpen);
@@ -2676,6 +2857,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
   updateTabs();
   render();
   renderPanel();
+
+  if (!bootStop && !mDay) setTimeout(function(){ locateMe(true); }, 1500);
 
   if (bootStop) {
     setTimeout(function(){ focusKey(bootStop.stop.key); }, 350);
